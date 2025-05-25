@@ -1,1 +1,2 @@
-print('Hello from app')
+print('Hello from app (updated)')
+print('Updated logic')
