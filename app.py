@@ -1,6 +1,8 @@
+logger.info('Hello from app')
+
 print('Hello from app (updated)')
 
-from math import *
+from math import pi
 
 x=10+5
 print("Debug 1")
