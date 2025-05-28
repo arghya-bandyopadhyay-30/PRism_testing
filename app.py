@@ -63,6 +63,7 @@ class BusinessCapabilityMapping(Action):
             observer=observer,
         )
         if "capabilities" not in additional_args:
+            print(CAPABILITIES_REQUIRED_ERROR)
             raise ValueError(CAPABILITIES_REQUIRED_ERROR)
         self.config = PipelineConfigService.get_instance()
 
@@ -168,6 +169,8 @@ class BusinessCapabilityMapping(Action):
             for (id, cap, summary), embeddings in zip(caps, capability_embeddings)
         ]
 
+        a=2+3
+
         return enriched_nodes
 
     async def post_processing(
@@ -177,29 +180,29 @@ class BusinessCapabilityMapping(Action):
         graph_constructor: GraphClientBuilder,
         vector_dimensions: int,
     ) -> list[BaseCodeConciseNode]:
-
-        graph_constructor.client().execute_query(
-            lambda driver: driver.execute_query(
-                """
-                CREATE VECTOR INDEX `capability-summary-embeddings` IF NOT EXISTS
-                FOR (n:CAPABILITY) ON (n.summaryVector)
-                OPTIONS {indexConfig: {
-                 `vector.dimensions`: $vector_dimensions,
-                 `vector.similarity_function`: 'cosine'
-                }}
-                """,
-                database_=db_name,
-                vector_dimensions=vector_dimensions,
+        try:
+            graph_constructor.client().execute_query(
+                lambda driver: driver.execute_query(
+                    """
+                    CREATE VECTOR INDEX `capability-summary-embeddings` IF NOT EXISTS
+                    FOR (n:CAPABILITY) ON (n.summaryVector)
+                    OPTIONS {indexConfig: {
+                    `vector.dimensions`: $vector_dimensions,
+                    `vector.similarity_function`: 'cosine'
+                    }}
+                    """,
+                    database_=db_name,
+                    vector_dimensions=vector_dimensions,
+                )
             )
-        )
-
-        graph_constructor.client().execute_query(
-            lambda driver: driver.execute_query(
-                """
-                CREATE FULLTEXT INDEX `capability-summary-text` IF NOT EXISTS FOR (n:CAPABILITY) ON EACH [n.summary]
-                """,
-                database_=db_name,
+        except:
+            graph_constructor.client().execute_query(
+                lambda driver: driver.execute_query(
+                    """
+                    CREATE FULLTEXT INDEX `capability-summary-text` IF NOT EXISTS FOR (n:CAPABILITY) ON EACH [n.summary]
+                    """,
+                    database_=db_name,
+                )
             )
-        )
 
         return processed_nodes
