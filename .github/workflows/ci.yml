@@ -18,19 +18,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Clone PRism repo
+        run: git clone https://github.com/arghya-bandyopadhyay-30/PRism.git
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.13"
 
-      - name: Install dependencies
+      - name: Install dependencies for PRism
         run: |
           python -m venv .venv
           source .venv/bin/activate
           pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r PRism/requirements.txt
 
-      - name: Run PRism
+      - name: Run PRism review
         run: |
           source .venv/bin/activate
+          cd PRism
           python main.py review --pr_url ${{ github.event.pull_request.html_url }}
