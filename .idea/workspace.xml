@@ -26,7 +26,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "feature/update-codebase",
+    "git-widget-placeholder": "main",
     "junie.onboarding.icon.badge.shown": "true",
     "last_opened_file_path": "/Users/arghyabanerjee/Desktop/PRism_testing",
     "node.js.detected.package.eslint": "true",
@@ -54,6 +54,7 @@
       <updated>1748292943246</updated>
       <workItem from="1748292944312" duration="221000" />
       <workItem from="1748294899601" duration="675000" />
+      <workItem from="1749961859475" duration="102000" />
     </task>
     <task id="LOCAL-00001" summary="Update app.py with debugging logic and create logger.py for error handling">
       <option name="closed" value="true" />
