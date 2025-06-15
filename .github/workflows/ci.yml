@@ -38,11 +38,4 @@ jobs:
           source .venv/bin/activate
           cp prism_rules/custom_rules.yaml PRism/config/custom_rules.yaml
           cd PRism
-          
-          echo "After copy:"
-          ls -R .
-          
-          echo "Inside config directory:"
-          ls -l config
-
-#          python main.py --pr_url ${{ github.event.pull_request.html_url }} --config_path config/custom_rules.yaml
+          python main.py --pr_url ${{ github.event.pull_request.html_url }} --config_path config/custom_rules.yaml
