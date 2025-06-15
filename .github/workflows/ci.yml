@@ -37,4 +37,4 @@ jobs:
         run: |
           source .venv/bin/activate
           cd PRism
-          python main.py --pr_url ${{ github.event.pull_request.html_url }} --config_path ../prism_rules/custom_rules.yaml
+          python main.py --pr_url ${{ github.event.pull_request.html_url }} --config_path ../../prism_rules/custom_rules.yaml
