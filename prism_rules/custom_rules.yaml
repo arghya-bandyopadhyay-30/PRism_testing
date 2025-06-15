@@ -1,0 +1,86 @@
+inline_rules:
+  - id: print_statement
+    description: "Detects print statements in the code."
+    pattern: "print\\(.*\\)"
+    suggestion: "Consider using logging instead of print statements for better control over output."
+    condition:
+      type: always
+    severity: warning
+
+  - id: bare_except
+    description: "Detects bare except statements."
+    pattern: "except\\s*:"
+    suggestion: "Specify the exception type to avoid catching unexpected exceptions."
+    condition:
+      type: always
+    severity: error
+
+  - id: wildcard_import
+    description: "Detects wildcard imports."
+    pattern: "from\\s+\\S+\\s+import\\s+\\*"
+    suggestion: "Avoid wildcard imports to maintain clarity and avoid namespace pollution."
+    condition:
+      type: always
+    severity: warning
+
+  - id: boolean_comparison
+    description: "Detects direct comparisons to boolean values like '== True', '== False', 'is True', 'is False', and their negated forms."
+    pattern: "(==\\s*(True|False)|is\\s+(not\\s+)?(True|False))"
+    suggestion: "Use 'if x:' or 'if not x:' for better readability and cleaner code."
+    condition:
+      type: always
+    severity: warning
+
+  - id: raw_assert_in_tests
+    description: "Detects use of raw 'assert' statements in test files."
+    pattern: "assert\\s+"
+    suggestion: "Use unittest or pytest assertions like assertEqual, assertTrue, etc."
+    condition:
+      type: "file_starts_with"
+      value: "test_"
+    severity: warning
+
+semantic_rules:
+  condition:
+    type: always
+
+  module:
+    label: "Refactoring Best Practices"
+    objectives:
+      - "Focus on improving overall code structure, clarity, modularity and maintainability by applying a broad set of refactoring techniques."
+      - "Extract Method: Move a section of code into a separate method with a meaningful name."
+      - "Inline Method: Replace a method call with the method body if the method is overly simple."
+      - "Extract Variable / Inline Temp: Clarify complex expressions by extracting or inlining temporary variables."
+      - "Replace Temp with Query: Use a direct method call instead of storing intermediate results in a temp variable."
+      - "Split Temporary Variable: Use distinct variables for different purposes rather than reusing one."
+      - "Remove Assignments to Parameters: Never modify function parameters inside methods—use locals instead."
+      - "Replace Method with Method Object: Turn a complex method into its own object with fields and methods."
+      - "Substitute Algorithm: Swap out inefficient or unclear algorithms for simpler or more optimal ones."
+      - "Pull Up / Push Down / Extract Superclass / Extract Interface: Refine class hierarchies to reduce duplication and improve abstraction."
+      - "Collapse Hierarchy: Merge classes when their distinctions are unnecessary, flattening overly deep inheritance."
+      - "Template Method: Define algorithm skeletons in superclasses, with steps implemented in subclasses."
+      - "Replace Inheritance with Delegation / Replace Delegation with Inheritance: Choose composition vs. inheritance based on which yields clearer design."
+      - "Move Method / Move Field: Shift responsibilities (methods or data) to the classes that use them most."
+      - "Extract Class / Inline Class: Split overly large classes into focused ones, or merge tiny classes that no longer add value."
+      - "Hide Delegate / Remove Middle Man: Simplify delegation chains by exposing the collaborator’s methods directly or letting clients call peers."
+      - "Introduce Foreign Method / Introduce Local Extension: Temporarily add behavior when you can’t modify a class directly."
+      - "Change Value to Reference / Change Reference to Value / Duplicate Observed Data: Reorganize data ownership and sharing to control coupling."
+      - "Self-Encapsulate Field / Encapsulate Collection: Wrap direct field or collection access in getters and setters to preserve invariants."
+      - "Replace Data Value with Object / Replace Array with Object: Give primitive data or raw arrays richer behavior by wrapping them in classes."
+      - "Adjust Associations: Convert unidirectional ↔ bidirectional links only when it improves clarity or reduces complexity."
+      - "Replace Magic Number with Named Constant; Replace Type Code with Class/Subclasses/State/Strategy: Strengthen intent and type safety."
+      - "Consolidate / Decompose Conditional Logic: Merge related checks, pull repeated code out, break big conditionals into well-named methods, or replace them with polymorphism or guard-clauses."
+      - "Introduce Null Object / Introduce Assertion: Replace `null` checks with Null-Object patterns or document assumptions with assertions."
+      - "Query vs Modifier: Keep methods focused—either query (no side effects) or command (no return value)."
+      - "Parameterize Method / Introduce Parameter Object / Preserve Whole Object: Simplify and standardize method signatures."
+      - "Rename Methods and Adjust Parameters: Use clear, intention-revealing names; remove or add parameters to match evolving responsibility."
+      - "Replace Error Codes with Exceptions; Replace Exceptions with Tests: Adopt idiomatic error-handling patterns."
+      - "Only suggest changes that improve readability, reduce duplication, and correctly align responsibilities with appropriate abstractions."
+
+  llm_model:
+    provider: ${LLM_PROVIDER}
+    model: ${LLM_MODEL_NAME}
+    endpoint: ${LLM_ENDPOINT}
+    api_key: ${LLM_API_KEY}
+    max_tokens: 4096
+    temperature: 0.2
